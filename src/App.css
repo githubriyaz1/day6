@@ -1,0 +1,112 @@
+/* Main App Container */
+.App {
+  text-align: center;
+}
+
+/* Navbar Styles */
+.navbar {
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  padding: 15px 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.navbar h1 {
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.total-employees {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 1rem;
+}
+
+.total-employees span {
+  font-weight: 600;
+  color: #007aff;
+}
+
+/* Main Content Container */
+.container {
+  padding: 40px 5%;
+}
+
+/* Form Container */
+.form-container {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  padding: 30px;
+  margin-bottom: 40px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.form-container h2 {
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.form-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-container input {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: 12px 15px;
+  font-size: 1rem;
+  color: #fff;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.form-container input::placeholder {
+  color: #aaa;
+}
+
+.form-container input:focus {
+  border-color: #007aff;
+}
+
+.form-container button {
+  background-color: #007aff;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.form-container button:hover {
+  background-color: #0056b3;
+}
+
+.error-message {
+  color: #ff3b30;
+  margin-top: 15px;
+  font-weight: 500;
+}
+
+/* Employee Grid Layout */
+.employee-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 30px;
+}
