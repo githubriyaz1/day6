@@ -1,49 +1,54 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import EmployeeCard from './components/EmployeeCard';
+import { db } from './firebase-config';
+import { collection, getDocs, addDoc, deleteDoc, doc } from 'firebase/firestore';
 
 function App() {
-  // Initial employee data
-  const initialEmployees = [
-    { id: 1, name: 'Ava Sharma', role: 'Frontend Developer', photo: 'https://i.pravatar.cc/150?img=1' },
-    { id: 2, name: 'Leo Martinez', role: 'Backend Developer', photo: 'https://i.pravatar.cc/150?img=2' },
-    { id: 3, name: 'Mia Chen', role: 'UI/UX Designer', photo: 'https://i.pravatar.cc/150?img=3' },
-  ];
-
-  const [employees, setEmployees] = useState(initialEmployees);
+  const [employees, setEmployees] = useState([]);
   const [newName, setNewName] = useState('');
   const [newRole, setNewRole] = useState('');
   const [newPhoto, setNewPhoto] = useState('');
   const [error, setError] = useState('');
+  
+  const employeesCollectionRef = collection(db, "employees");
 
-  const handleAddEmployee = (e) => {
-    e.preventDefault(); // Prevent form from reloading the page
+  const getEmployees = async () => {
+    // Corrected variable name below
+    const data = await getDocs(employeesCollectionRef); 
+    setEmployees(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+  };
 
-    // Simple validation
+  useEffect(() => {
+    getEmployees();
+  }, []);
+
+  const handleAddEmployee = async (e) => {
+    e.preventDefault();
+
     if (!newName.trim() || !newRole.trim()) {
       setError('Name and Role fields cannot be empty.');
       return;
     }
 
-    const newEmployee = {
-      id: Date.now(), // Unique ID based on timestamp
+    // Corrected variable name below
+    await addDoc(employeesCollectionRef, { 
       name: newName,
       role: newRole,
-      // Use a default image if no URL is provided
-      photo: newPhoto || `https://i.pravatar.cc/150?u=${Date.now()}`,
-    };
+      photo: newPhoto || `https://i.pravatar.cc/150?u=${Date.now()}`
+    });
 
-    setEmployees([...employees, newEmployee]);
-
-    // Clear input fields and error message
     setNewName('');
     setNewRole('');
     setNewPhoto('');
     setError('');
+    getEmployees(); 
   };
 
-  const handleDeleteEmployee = (id) => {
-    setEmployees(employees.filter(employee => employee.id !== id));
+  const handleDeleteEmployee = async (id) => {
+    const employeeDoc = doc(db, "employees", id);
+    await deleteDoc(employeeDoc);
+    getEmployees();
   };
 
   return (
