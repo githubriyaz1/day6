@@ -14,7 +14,6 @@ function App() {
   const employeesCollectionRef = collection(db, "employees");
 
   const getEmployees = async () => {
-    // Corrected variable name below
     const data = await getDocs(employeesCollectionRef); 
     setEmployees(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
   };
@@ -31,18 +30,34 @@ function App() {
       return;
     }
 
-    // Corrected variable name below
-    await addDoc(employeesCollectionRef, { 
-      name: newName,
-      role: newRole,
-      photo: newPhoto || `https://i.pravatar.cc/150?u=${Date.now()}`
-    });
+    try {
+      // This will log to the console when you click the button
+      console.log("Attempting to add a new employee to Firebase...");
 
-    setNewName('');
-    setNewRole('');
-    setNewPhoto('');
-    setError('');
-    getEmployees(); 
+      const newEmployeeData = {
+        name: newName,
+        role: newRole,
+        photo: newPhoto || `https://i.pravatar.cc/150?u=${Date.now()}`
+      };
+
+      const docRef = await addDoc(employeesCollectionRef, newEmployeeData);
+      
+      // If successful, you'll get an alert
+      console.log("Document successfully written with ID: ", docRef.id);
+      alert("Success! Employee was added to Firebase.");
+
+      // Clear the form and refresh the list
+      setNewName('');
+      setNewRole('');
+      setNewPhoto('');
+      setError('');
+      getEmployees();
+
+    } catch (error) {
+      // If it fails, this code will run and show you the error
+      console.error("Firebase error: ", error);
+      alert(`Failed to add employee. \n\nError: ${error.message}`);
+    }
   };
 
   const handleDeleteEmployee = async (id) => {
